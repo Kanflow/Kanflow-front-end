@@ -1,14 +1,9 @@
+// @flow
 import React, { Component } from "react";
 import Status from "./Status";
 import { DragDropContext } from "react-beautiful-dnd";
 import styled from "styled-components";
-
-const todos = [
-  { id: 1, name: "cat", description: "This is a cat" },
-  { id: 2, name: "dog", description: "This is a dog" },
-  { id: 3, name: "frog", description: "This is a cat" },
-  { id: 4, name: "bear", description: "This is a bear" }
-];
+import { connect } from "react-redux";
 
 const Container = styled.div`
   display: flex;
@@ -28,9 +23,31 @@ const Title = styled.h1`
   align-self: center;
 `;
 
+const reorder = (list: any, startIndex: number, endIndex: number) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+};
+
 class App extends Component {
-  // TODO: Implement me
-  onDragEnd = result => {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      todos: this.props.todos
+    };
+  }
+
+  onDragEnd = result => {
+    const items = reorder(
+      this.props.todos,
+      result.source.index,
+      result.destination.index
+    );
+    this.setState({
+      todos: items
+    });
+  };
 
   render() {
     return (
@@ -39,18 +56,15 @@ class App extends Component {
           <Container>
             <Title> Kanflow </Title>
             <Board>
-              <Status
-                id={1}
-                name="Backlog"
-                description="Dumping ground"
-                todos={todos}
-              />
-              <Status
-                id={2}
-                name="To Do"
-                description="Prioritised list"
-                todos={todos}
-              />
+              {this.props.statuses.map((status, index) => (
+                <Status
+                  key={index}
+                  id={index}
+                  name={status.name}
+                  description={status.description}
+                  todos={this.state.todos}
+                />
+              ))}
             </Board>
           </Container>
         </DragDropContext>
@@ -58,5 +72,18 @@ class App extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    statuses: state.statuses.statuses,
+    todos: state.todos.todos
+  };
+};
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return {};
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

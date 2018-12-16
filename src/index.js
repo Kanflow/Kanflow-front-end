@@ -4,9 +4,13 @@ import App from "./App";
 import { Provider } from "react-redux";
 import reducers from "./reducers.js";
 
-import { createStore } from "redux";
+import { createStore, compose } from "redux";
 
-const store = createStore(reducers);
+const enhancer = compose(
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+const store = createStore(reducers, compose(enhancer));
 
 render(
   <Provider store={store}>

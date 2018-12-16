@@ -1,8 +1,9 @@
-import todoReducer from "./Todo/reducers.js";
+import todos from "./Todo/reducers.js";
+import statuses from "./Status/reducers.js";
 
 import { combineReducers } from "redux";
 
-const reducer = (state = null, action) => {
+const app = (state = null, action) => {
   switch (action.type) {
     default:
       return state;
@@ -10,8 +11,9 @@ const reducer = (state = null, action) => {
 };
 
 const reducers = combineReducers({
-  todoReducer,
-  reducer
+  todos,
+  statuses,
+  app
 });
 
 export default reducers;

@@ -42,11 +42,12 @@ class Status extends Component<Props> {
       <Container>
         <Title> {this.props.name}</Title>
         <Description> {this.props.description} </Description>
-        <Droppable droppableId={this.props.id}>
+        <Droppable droppableId={toString(this.props.id)}>
           {provided => (
             <TaskList ref={provided.innerRef} {...provided.droppableProps}>
               {this.props.todos.map((t, index) => (
                 <Todo
+                  key={index}
                   index={index}
                   id={t.id}
                   name={t.name}
