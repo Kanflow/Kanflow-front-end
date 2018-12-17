@@ -3,7 +3,8 @@ import React, { Component } from "react";
 import Status from "./Status";
 import { DragDropContext } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { connect } from "react-redux";
+import { connect, dispatch } from "react-redux";
+import { reorderTodo } from "./Todo/actions";
 
 const Container = styled.div`
   display: flex;
@@ -23,13 +24,6 @@ const Title = styled.h1`
   align-self: center;
 `;
 
-const reorder = (list: any, startIndex: number, endIndex: number) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-  return result;
-};
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -38,31 +32,20 @@ class App extends Component {
     };
   }
 
-  onDragEnd = result => {
-    const items = reorder(
-      this.props.todos,
-      result.source.index,
-      result.destination.index
-    );
-    this.setState({
-      todos: items
-    });
-  };
-
   render() {
     return (
       <div>
-        <DragDropContext onDragEnd={this.onDragEnd}>
+        <DragDropContext onDragEnd={this.props.onDragEnd}>
           <Container>
             <Title> Kanflow </Title>
             <Board>
               {this.props.statuses.map((status, index) => (
                 <Status
                   key={index}
-                  id={index}
+                  id={status.ID.toString()}
                   name={status.name}
                   description={status.description}
-                  todos={this.state.todos}
+                  todos={this.props.todos}
                 />
               ))}
             </Board>
@@ -80,7 +63,17 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    // TODO: This doesn't deal with moving between states would need:
+    // - startStatusID, endStatusID as well as the current args
+    // - logic to re-order the destination and source statuses
+    onDragEnd: result => {
+      const statusID = result.destination.droppableId;
+      dispatch(
+        reorderTodo(statusID, result.source.index, result.destination.index)
+      );
+    }
+  };
 };
 
 export default connect(

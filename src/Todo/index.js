@@ -3,10 +3,6 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 
-function mapStateToProps(state) {
-  return {};
-}
-
 const Container = styled.div`
   margin: 2px;
   padding: 5px;
@@ -28,10 +24,15 @@ const Description = styled.h2`
 `;
 
 type Props = {
-  id: number,
+  ID: number,
   name: string,
   description: string
 };
+
+function mapStateToProps(state) {
+  return {};
+}
+
 class Todo extends PureComponent<Props> {
   render() {
     return (
