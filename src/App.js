@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Status from "./Status";
 import { DragDropContext } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { connect, dispatch } from "react-redux";
+import { connect } from "react-redux";
 import { reorderTodo } from "./Todo/actions";
 
 const Container = styled.div`
@@ -68,9 +68,9 @@ const mapDispatchToProps = dispatch => {
     // - startStatusID, endStatusID as well as the current args
     // - logic to re-order the destination and source statuses
     onDragEnd: result => {
-      const statusID = result.destination.droppableId;
+      const status_ID = result.destination.droppableId;
       dispatch(
-        reorderTodo(statusID, result.source.index, result.destination.index)
+        reorderTodo(status_ID, result.source.index, result.destination.index)
       );
     }
   };
