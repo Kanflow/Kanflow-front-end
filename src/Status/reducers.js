@@ -1,7 +1,7 @@
 const statusInitialState = {
   statuses: [
-    { id: 1, name: "Backlog", description: "Dumping Ground" },
-    { id: 2, name: "Todo", description: "Prioritised list" }
+    { ID: 1, name: "Backlog", description: "Dumping Ground", todos: [] },
+    { ID: 2, name: "Todo", description: "Prioritised list", todos: [] }
   ]
 };
 

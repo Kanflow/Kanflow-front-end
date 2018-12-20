@@ -4,16 +4,6 @@ import Todo from "../Todo";
 import styled from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
 
-function mapStateToProps(state) {
-  return {};
-}
-type Props = {
-  id: number,
-  name: string,
-  description: string,
-  todos: Object
-};
-
 const Container = styled.div`
   margin: 10px;
   padding: 5px;
@@ -36,24 +26,38 @@ const Description = styled.h2`
 
 const TaskList = styled.div``;
 
+function mapStateToProps(state) {
+  return {};
+}
+type Props = {
+  ID: number,
+  name: string,
+  description: string,
+  todos: Object
+};
+
 class Status extends Component<Props> {
   render() {
     return (
       <Container>
         <Title> {this.props.name}</Title>
         <Description> {this.props.description} </Description>
-        <Droppable droppableId={toString(this.props.id)}>
+        <Droppable droppableId={this.props.id}>
           {provided => (
             <TaskList ref={provided.innerRef} {...provided.droppableProps}>
-              {this.props.todos.map((t, index) => (
-                <Todo
-                  key={index}
-                  index={index}
-                  id={t.id}
-                  name={t.name}
-                  description={t.description}
-                />
-              ))}
+              {this.props.todos
+                .filter(
+                  t => t.status_ID.toString() === this.props.id.toString()
+                )
+                .map((t, index) => (
+                  <Todo
+                    key={index}
+                    index={index}
+                    id={t.ID}
+                    name={t.name}
+                    description={t.description}
+                  />
+                ))}
               {provided.placeholder}
             </TaskList>
           )}
