@@ -1,8 +1,9 @@
 {
-  "name": "kanflow-front-end",
+  "name": "kanflow-ui",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@atlaskit/inline-edit": "^7.1.7",
     "@babel/core": "7.1.0",
     "@svgr/webpack": "2.4.1",
     "babel-core": "7.0.0-bridge.0",
@@ -119,6 +120,7 @@
     ]
   },
   "devDependencies": {
-    "react-beautiful-dnd": "^10.0.3"
+    "react-beautiful-dnd": "^10.0.3",
+    "reselect": "^4.0.0"
   }
 }
