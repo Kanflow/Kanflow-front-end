@@ -29,14 +29,14 @@ type Props = {
   description: string
 };
 
-function mapStateToProps(state) {
-  return {};
-}
-
 class Todo extends PureComponent<Props> {
   render() {
     return (
-      <Draggable draggableId={this.props.id} index={this.props.index}>
+      <Draggable
+        draggableId={this.props.id}
+        index={this.props.index}
+        type="TODO"
+      >
         {provided => (
           <Container
             {...provided.draggableProps}
@@ -51,5 +51,8 @@ class Todo extends PureComponent<Props> {
     );
   }
 }
+const mapStateToProps = state => {
+  return {};
+};
 
 export default connect(mapStateToProps)(Todo);

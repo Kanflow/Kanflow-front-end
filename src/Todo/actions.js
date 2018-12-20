@@ -1,14 +1,21 @@
 // @flow
-import { REORDER_TODO } from "./actionTypes";
+import { REORDER_TODO, CREATE_TODO } from "./actionTypes";
+
+export function createTodo(name: string) {
+  return {
+    type: CREATE_TODO,
+    name: name
+  };
+}
 
 export function reorderTodo(
-  statusID: number,
+  status_ID: number,
   startIndex: number,
   endIndex: number
 ) {
   return {
     type: REORDER_TODO,
-    statusID: statusID,
+    status_ID: status_ID,
     startIndex: startIndex,
     endIndex: endIndex
   };

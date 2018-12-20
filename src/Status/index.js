@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Todo from "../Todo";
+import CreateTodoButton from "../CreateTodoButton";
 import styled from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
 
@@ -26,11 +27,8 @@ const Description = styled.h2`
 
 const TaskList = styled.div``;
 
-function mapStateToProps(state) {
-  return {};
-}
 type Props = {
-  ID: number,
+  id: number,
   name: string,
   description: string,
   todos: Object
@@ -42,7 +40,7 @@ class Status extends Component<Props> {
       <Container>
         <Title> {this.props.name}</Title>
         <Description> {this.props.description} </Description>
-        <Droppable droppableId={this.props.id}>
+        <Droppable droppableId={this.props.id} type="TODO">
           {provided => (
             <TaskList ref={provided.innerRef} {...provided.droppableProps}>
               {this.props.todos
@@ -62,9 +60,14 @@ class Status extends Component<Props> {
             </TaskList>
           )}
         </Droppable>
+        {this.props.id === "0" ? <CreateTodoButton /> : null}
       </Container>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {};
+};
 
 export default connect(mapStateToProps)(Status);
