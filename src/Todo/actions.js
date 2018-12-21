@@ -1,5 +1,5 @@
 // @flow
-import { REORDER_TODO, CREATE_TODO } from "./actionTypes";
+import { REORDER_TODO, CREATE_TODO, TRANSITION_TODO } from "./actionTypes";
 
 export function createTodo(name: string) {
   return {
@@ -10,13 +10,28 @@ export function createTodo(name: string) {
 
 export function reorderTodo(
   status_ID: number,
-  startIndex: number,
-  endIndex: number
+  sourceIndex: number,
+  destinationIndex: number
 ) {
   return {
     type: REORDER_TODO,
     status_ID: status_ID,
-    startIndex: startIndex,
-    endIndex: endIndex
+    sourceIndex: sourceIndex,
+    destinationIndex: destinationIndex
+  };
+}
+
+export function transitionTodo(
+  sourceStatus_ID: number,
+  destinationStatus_ID: number,
+  sourceIndex: number,
+  destinationIndex: number
+) {
+  return {
+    type: TRANSITION_TODO,
+    sourceStatus_ID: sourceStatus_ID,
+    destinationStatus_ID: destinationStatus_ID,
+    sourceIndex: sourceIndex,
+    destinationIndex: destinationIndex
   };
 }

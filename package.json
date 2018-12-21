@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@atlaskit/css-reset": "^3.0.5",
     "@atlaskit/inline-edit": "^7.1.7",
+    "@atlaskit/theme": "^7.0.1",
     "@babel/core": "7.1.0",
     "@svgr/webpack": "2.4.1",
     "babel-core": "7.0.0-bridge.0",

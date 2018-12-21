@@ -1,5 +1,5 @@
 // @flow
-import { REORDER_TODO, CREATE_TODO } from "./actionTypes";
+import { REORDER_TODO, CREATE_TODO, TRANSITION_TODO } from "./actionTypes";
 
 const initialState = {
   todos: [
@@ -53,10 +53,33 @@ const reducer = (state = initialState, action) => {
       const remainingTodos = allTodos.filter(
         t => t.status_ID.toString() !== action.status_ID.toString()
       );
-      const [removed] = filteredTodos.splice(action.startIndex, 1);
-      filteredTodos.splice(action.endIndex, 0, removed);
+      const [removed] = filteredTodos.splice(action.sourceIndex, 1);
+      filteredTodos.splice(action.destinationIndex, 0, removed);
 
       return { ...state, todos: remainingTodos.concat(filteredTodos) };
+
+    case TRANSITION_TODO:
+      const allTs = [...state.todos];
+
+      const sourceTodos = allTs.filter(
+        t => t.status_ID.toString() === action.sourceStatus_ID.toString()
+      );
+      const destinationTodos = allTs.filter(
+        t => t.status_ID.toString() === action.destinationStatus_ID.toString()
+      );
+      const remainders = allTs.splice(0, null, [
+        ...sourceTodos,
+        ...destinationTodos
+      ]);
+
+      const [removedTodo] = sourceTodos.splice(action.sourceIndex, 1);
+      removedTodo.status_ID = action.destinationStatus_ID;
+      destinationTodos.splice(action.destinationIndex, 0, removedTodo);
+
+      return {
+        ...state,
+        todos: remainders.concat(...sourceTodos, ...destinationTodos)
+      };
 
     case CREATE_TODO:
       const todos = [...state.todos];

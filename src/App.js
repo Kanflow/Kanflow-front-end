@@ -4,7 +4,7 @@ import Status from "./Status";
 import { DragDropContext } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { reorderTodo } from "./Todo/actions";
+import { reorderTodo, transitionTodo } from "./Todo/actions";
 
 const Container = styled.div`
   display: flex;
@@ -64,14 +64,30 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // TODO: This doesn't deal with moving between states would need:
-    // - startStatusID, endStatusID as well as the current args
-    // - logic to re-order the destination and source statuses
     onDragEnd: result => {
-      const status_ID = result.destination.droppableId;
-      dispatch(
-        reorderTodo(status_ID, result.source.index, result.destination.index)
-      );
+      if (result.destination == null) {
+        return;
+      }
+      const destinationStatus_ID = result.destination.droppableId;
+      const sourceStatus_ID = result.source.droppableId;
+      if (destinationStatus_ID === sourceStatus_ID) {
+        dispatch(
+          reorderTodo(
+            sourceStatus_ID,
+            result.source.index,
+            result.destination.index
+          )
+        );
+      } else {
+        dispatch(
+          transitionTodo(
+            sourceStatus_ID,
+            destinationStatus_ID,
+            result.source.index,
+            result.destination.index
+          )
+        );
+      }
     }
   };
 };

@@ -1,5 +1,3 @@
-// @flow
-
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
@@ -10,7 +8,13 @@ import {
 import { createTodo } from "../Todo/actions";
 
 const Container = styled.div`
-  margin: 5px;
+  margin: 10px 5px;
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #ccc;
 `;
 
 function mapStateToProps(state) {
@@ -28,12 +32,13 @@ class CreateTodoButton extends Component {
       isEditing: true
     });
   };
+
   onConfirm = () => {
-    this.props.onConfirm(this.state.value);
     this.setState({
       isEditing: false,
       value: ""
     });
+    this.props.onConfirm(this.state.value);
   };
 
   onCancel = () => {
@@ -58,7 +63,6 @@ class CreateTodoButton extends Component {
           onCancel={this.onCancel}
           onConfirm={this.onConfirm}
           isConfirmOnBlurDisabled={true}
-          shouldConfirmOnEnter={true}
           readView={
             <SingleLineTextInput
               isEditing={false}
@@ -68,7 +72,7 @@ class CreateTodoButton extends Component {
           editView={
             <SingleLineTextInput
               isEditing
-              isInitiallySelected
+              isInitiallySelected={true}
               value={this.state.value}
               onChange={this.onChange}
             />
