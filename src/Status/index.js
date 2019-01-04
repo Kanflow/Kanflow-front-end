@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Todo from "../Todo";
-import CreateTodoButton from "../CreateTodoButton";
+import CreateTodo from "../CreateTodo";
 import styled from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
 
 const Container = styled.div`
   margin: 10px;
   padding: 5px;
-  width: 200px;
+  width: 220px;
   display: flex;
   flex-direction: column;
   border: 1px solid #999999;
@@ -16,13 +16,16 @@ const Container = styled.div`
 const Title = styled.h1`
   font-size: 24px;
   font-family: Helvetica;
-  font-weight: 500;
   align-self: center;
+  font-weight: 100;
+  margin: 20px 5px 5px 5px;
 `;
 const Description = styled.h2`
-  font-size: 16px;
+  font-size: 14px;
   font-family: Helvetica;
-  font-weight: 300;
+  font-weight: 100;
+  align-self: center;
+  margin: 5px 0px 20px 0px;
 `;
 
 const TaskList = styled.div``;
@@ -30,8 +33,7 @@ const TaskList = styled.div``;
 type Props = {
   id: number,
   name: string,
-  description: string,
-  todos: Object
+  description: string
 };
 
 class Status extends Component<Props> {
@@ -60,14 +62,16 @@ class Status extends Component<Props> {
             </TaskList>
           )}
         </Droppable>
-        {this.props.id === "0" ? <CreateTodoButton /> : null}
+        {this.props.id === "0" ? <CreateTodo /> : null}
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    todos: state.todos.todos
+  };
 };
 
 export default connect(mapStateToProps)(Status);

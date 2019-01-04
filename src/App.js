@@ -5,6 +5,7 @@ import { DragDropContext } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { reorderTodo, transitionTodo } from "./Todo/actions";
+import CreateStatus from "./CreateStatus";
 
 const Container = styled.div`
   display: flex;
@@ -25,13 +26,6 @@ const Title = styled.h1`
 `;
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      todos: this.props.todos
-    };
-  }
-
   render() {
     return (
       <div>
@@ -45,9 +39,9 @@ class App extends Component {
                   id={status.ID.toString()}
                   name={status.name}
                   description={status.description}
-                  todos={this.props.todos}
                 />
               ))}
+              <CreateStatus />
             </Board>
           </Container>
         </DragDropContext>
@@ -57,8 +51,7 @@ class App extends Component {
 }
 const mapStateToProps = state => {
   return {
-    statuses: state.statuses.statuses,
-    todos: state.todos.todos
+    statuses: state.statuses.statuses
   };
 };
 

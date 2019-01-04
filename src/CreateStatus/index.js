@@ -5,23 +5,31 @@ import {
   InlineEditStateless,
   SingleLineTextInput
 } from "@atlaskit/inline-edit";
-import { createTodo } from "../Todo/actions";
+import { createStatus } from "../Status/actions";
 
 const Container = styled.div`
-  margin: 10px 5px;
-  padding: 5px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   border: 1px dashed #ccc;
+  width: 200px;
+  margin: 10px 5px;
+  padding: 10px 16px;
+`;
+
+const Title = styled.h1`
+  font-size: 16px;
+  font-family: Helvetica;
+  align-self: center;
+  font-weight: 100;
+  margin: 20px 5px 5px 5px;
 `;
 
 function mapStateToProps(state) {
   return {};
 }
 
-class CreateTodoButton extends Component {
+class CreateStatus extends Component {
   state = {
     value: "",
     isEditing: false
@@ -56,17 +64,18 @@ class CreateTodoButton extends Component {
   render() {
     return (
       <Container>
+        <Title> Create a new status </Title>
         <InlineEditStateless
-          label="Create Todo"
           isEditing={this.state.isEditing}
           onEditRequested={this.onEditRequested}
           onCancel={this.onCancel}
           onConfirm={this.onConfirm}
           isConfirmOnBlurDisabled={true}
+          shouldConfirmOnEnter={true}
           readView={
             <SingleLineTextInput
               isEditing={false}
-              value={this.state.value || "Enter a name for this task"}
+              value={this.state.value || "Enter a name for this status"}
             />
           }
           editView={
@@ -84,12 +93,12 @@ class CreateTodoButton extends Component {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    onConfirm: result => {
-      dispatch(createTodo(result));
+    onConfirm: name => {
+      dispatch(createStatus(name));
     }
   };
 };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateTodoButton);
+)(CreateStatus);
