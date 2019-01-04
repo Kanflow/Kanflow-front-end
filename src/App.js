@@ -3,8 +3,9 @@ import React, { Component } from "react";
 import Status from "./Status";
 import { DragDropContext } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { connect, dispatch } from "react-redux";
-import { reorderTodo } from "./Todo/actions";
+import { connect } from "react-redux";
+import { reorderTodo, transitionTodo } from "./Todo/actions";
+import CreateStatus from "./CreateStatus";
 
 const Container = styled.div`
   display: flex;
@@ -25,13 +26,6 @@ const Title = styled.h1`
 `;
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      todos: this.props.todos
-    };
-  }
-
   render() {
     return (
       <div>
@@ -45,9 +39,9 @@ class App extends Component {
                   id={status.ID.toString()}
                   name={status.name}
                   description={status.description}
-                  todos={this.props.todos}
                 />
               ))}
+              <CreateStatus />
             </Board>
           </Container>
         </DragDropContext>
@@ -57,21 +51,36 @@ class App extends Component {
 }
 const mapStateToProps = state => {
   return {
-    statuses: state.statuses.statuses,
-    todos: state.todos.todos
+    statuses: state.statuses.statuses
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    // TODO: This doesn't deal with moving between states would need:
-    // - startStatusID, endStatusID as well as the current args
-    // - logic to re-order the destination and source statuses
     onDragEnd: result => {
-      const statusID = result.destination.droppableId;
-      dispatch(
-        reorderTodo(statusID, result.source.index, result.destination.index)
-      );
+      if (result.destination == null) {
+        return;
+      }
+      const destinationStatus_ID = result.destination.droppableId;
+      const sourceStatus_ID = result.source.droppableId;
+      if (destinationStatus_ID === sourceStatus_ID) {
+        dispatch(
+          reorderTodo(
+            sourceStatus_ID,
+            result.source.index,
+            result.destination.index
+          )
+        );
+      } else {
+        dispatch(
+          transitionTodo(
+            sourceStatus_ID,
+            destinationStatus_ID,
+            result.source.index,
+            result.destination.index
+          )
+        );
+      }
     }
   };
 };

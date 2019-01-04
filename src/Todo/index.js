@@ -1,26 +1,26 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
+import {
+  InlineEditStateless,
+  SingleLineTextInput
+} from "@atlaskit/inline-edit";
+
+import { changeTodoName } from "../Todo/actions";
 
 const Container = styled.div`
-  margin: 2px;
-  padding: 5px;
-  width: 180px;
+  margin: 5px;
+  padding: 5px 16px;
   display: flex;
   flex-direction: column;
   background-color: white;
   border: 1px solid #999999;
 `;
-const Title = styled.h1`
-  font-size: 14px;
-  font-family: Helvetica;
-  font-weight: 500;
-`;
 const Description = styled.h2`
   font-size: 12px;
   font-family: Helvetica;
-  font-weight: 300;
+  font-weight: 100;
 `;
 
 type Props = {
@@ -29,21 +29,73 @@ type Props = {
   description: string
 };
 
-function mapStateToProps(state) {
-  return {};
-}
+class Todo extends Component<Props> {
+  state = {
+    isEditingName: false,
+    name: ""
+  };
 
-class Todo extends PureComponent<Props> {
+  onEditRequestedName = () => {
+    this.setState({
+      isEditingName: true
+    });
+  };
+
+  onConfirmName = () => {
+    this.setState({
+      isEditingName: false,
+      name: ""
+    });
+    this.props.onConfirmName(this.props.id, this.state.name);
+  };
+
+  onCancelName = () => {
+    this.setState({
+      isEditingName: false
+    });
+  };
+
+  onChangeName = (event: any) => {
+    this.setState({
+      name: event.target.value
+    });
+  };
+
   render() {
     return (
-      <Draggable draggableId={this.props.id} index={this.props.index}>
+      <Draggable
+        draggableId={this.props.id}
+        index={this.props.index}
+        type="TODO"
+      >
         {provided => (
           <Container
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
-            <Title>{this.props.name}</Title>
+            <InlineEditStateless
+              isEditing={this.state.isEditingName}
+              onEditRequested={this.onEditRequestedName}
+              onCancel={this.onCancelName}
+              onConfirm={this.onConfirmName}
+              isConfirmOnBlurDisabled={true}
+              shouldConfirmOnEnter={true}
+              readView={
+                <SingleLineTextInput
+                  isEditing={false}
+                  value={this.props.name}
+                />
+              }
+              editView={
+                <SingleLineTextInput
+                  isEditing
+                  isInitiallySelected={true}
+                  value={this.state.name}
+                  onChange={this.onChangeName}
+                />
+              }
+            />
             <Description> {this.props.description} </Description>
           </Container>
         )}
@@ -51,5 +103,19 @@ class Todo extends PureComponent<Props> {
     );
   }
 }
+const mapStateToProps = state => {
+  return {};
+};
 
-export default connect(mapStateToProps)(Todo);
+const mapDispatchToProps = dispatch => {
+  return {
+    onConfirmName: (id, name) => {
+      dispatch(changeTodoName(id, name));
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Todo);

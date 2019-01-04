@@ -1,15 +1,50 @@
 // @flow
-import { REORDER_TODO } from "./actionTypes";
+import {
+  REORDER_TODO,
+  CREATE_TODO,
+  TRANSITION_TODO,
+  CHANGE_TODO_NAME
+} from "./actionTypes";
+
+export function createTodo(name: string) {
+  return {
+    type: CREATE_TODO,
+    name: name
+  };
+}
 
 export function reorderTodo(
-  statusID: number,
-  startIndex: number,
-  endIndex: number
+  status_ID: number,
+  sourceIndex: number,
+  destinationIndex: number
 ) {
   return {
     type: REORDER_TODO,
-    statusID: statusID,
-    startIndex: startIndex,
-    endIndex: endIndex
+    status_ID: status_ID,
+    sourceIndex: sourceIndex,
+    destinationIndex: destinationIndex
+  };
+}
+
+export function transitionTodo(
+  sourceStatus_ID: number,
+  destinationStatus_ID: number,
+  sourceIndex: number,
+  destinationIndex: number
+) {
+  return {
+    type: TRANSITION_TODO,
+    sourceStatus_ID: sourceStatus_ID,
+    destinationStatus_ID: destinationStatus_ID,
+    sourceIndex: sourceIndex,
+    destinationIndex: destinationIndex
+  };
+}
+
+export function changeTodoName(id: number, name: string) {
+  return {
+    type: CHANGE_TODO_NAME,
+    id: id,
+    name: name
   };
 }
